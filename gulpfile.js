@@ -17,5 +17,6 @@ gulp.task('default', function() {
 
   gulp.watch(['./public/js/**/*.js', './views/**/*.jade'], server.notify);
   gulp.watch(['./views/styles/**/*.stylus'], ['styles', server.notify]);
-  gulp.watch(['./routes/**/*.js'], [server.run]);
+  
+  gulp.watch(['./app.js', './routes/**/*.js'], [server.run]);
 });

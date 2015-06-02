@@ -1,0 +1,25 @@
+html
+  
+  head
+    title Ordering Example
+
+    script(src="/js/lib/angular.min.js")
+    script(src="/js/lib/ng-sortable.min.js")
+
+    script(src="/js/angular/directives/pgOrderingDir.js")
+
+  body(ng-app="App" ng-controller="MainCtrl")
+  
+    pg-ordering(items="items" format="image")
+    
+    script.
+      angular
+        .module('App', ['pgOrderingDir'])
+        .controller('MainCtrl', ['$scope', function($scope) {
+          
+          $scope.items = [
+            {name: "Primero", image: "http://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Logo_Google_2013_Official.svg/250px-Logo_Google_2013_Official.svg.png"},
+            {name: "Segundo", image: "http://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Logo_Google_2013_Official.svg/250px-Logo_Google_2013_Official.svg.png"},
+            {name: "Tercero", image: "http://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Logo_Google_2013_Official.svg/250px-Logo_Google_2013_Official.svg.png"}
+          ]
+        }]);

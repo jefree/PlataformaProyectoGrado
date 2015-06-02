@@ -1,0 +1,5 @@
+ul(as-sortable="dragControlListener" ng-model="items")
+  li(ng-repeat="item in items" as-sortable-item)
+    div(as-sortable-item-handle)
+
+      div(ng-include="getTemplateByFormat()")
