@@ -10,16 +10,38 @@ html
 
   body(ng-app="App" ng-controller="MainCtrl")
   
-    pg-ordering(items="items" format="image")
+    pg-ordering(items="itemsImage" format="image")
+    pg-ordering(items="itemsAudio" format="audio")
+    pg-ordering(items="itemsText" format="text" drag-control-listener="onlyText")
     
     script.
       angular
         .module('App', ['pgOrderingDir'])
         .controller('MainCtrl', ['$scope', function($scope) {
           
-          $scope.items = [
+          $scope.itemsImage = [
             {name: "Primero", image: "http://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Logo_Google_2013_Official.svg/250px-Logo_Google_2013_Official.svg.png"},
             {name: "Segundo", image: "http://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Logo_Google_2013_Official.svg/250px-Logo_Google_2013_Official.svg.png"},
             {name: "Tercero", image: "http://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Logo_Google_2013_Official.svg/250px-Logo_Google_2013_Official.svg.png"}
-          ]
+          ];
+
+          $scope.itemsAudio = [
+            {name: "Primero", audio: "/audio/horse.mp3"},
+            {name: "Segundo", audio: "/audio/horse.mp3"},
+            {name: "Tercero", audio: "/audio/horse.mp3"}
+          ];
+
+          $scope.itemsText = [
+            {name: "Primero", text: "este es el primero"},
+            {name: "Segundo", text: "y este el segundo"},
+            {name: "Tercero", text: "a que este es el tercero"}
+          ];
+
+          $scope.onlyText = {
+            accept: function(src, dst) {
+            console.log('here', src.itemScope.item.text)
+              return src.itemScope.item.text != null;
+            }
+          }
+
         }]);

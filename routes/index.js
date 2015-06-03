@@ -12,8 +12,6 @@ router.get('/angular/directives/:module/:view?.html', function(req, res, next) {
   var module = req.params.module;
   var view = req.params.view;
 
-  console.log(module, view);
-
   res.render('angular/directives/'+module+'/'+view);
 
 });
