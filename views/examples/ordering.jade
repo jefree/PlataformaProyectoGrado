@@ -10,9 +10,9 @@ html
 
   body(ng-app="App" ng-controller="MainCtrl")
   
-    pg-ordering(items="itemsImage" format="image")
-    pg-ordering(items="itemsAudio" format="audio")
-    pg-ordering(items="itemsText" format="text" drag-control-listener="onlyText")
+    pg-ordering(items="itemsImage" format="image" )
+    pg-ordering(items="itemsAudio" format="audio" require-field="audio")
+    pg-ordering(items="itemsText" format="text" require-field="text")
     
     script.
       angular
@@ -36,12 +36,4 @@ html
             {name: "Segundo", text: "y este el segundo"},
             {name: "Tercero", text: "a que este es el tercero"}
           ];
-
-          $scope.onlyText = {
-            accept: function(src, dst) {
-            console.log('here', src.itemScope.item.text)
-              return src.itemScope.item.text != null;
-            }
-          }
-
         }]);

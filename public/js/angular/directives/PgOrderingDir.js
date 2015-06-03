@@ -13,10 +13,18 @@ angular
     scope: {
       items: '=',
       format: "@",
-      dragControlListener: '='
+      requireField: "@"
     },
 
     link: function(scope) {
+
+      if (scope.dragControlListener == null) {
+        scope.dragControlListener = {
+          accept: function (src, dst) {
+            return !scope.requireField || scope.requireField in src.itemScope.item;
+          }
+        }
+      }
 
       scope.getTemplateByFormat = function() {
         return urlByFormat[scope.format];
