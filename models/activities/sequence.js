@@ -20,25 +20,19 @@ Sequence.statics.add = function(author,score,statement,answer){
 	}):
 
 	new_sequence.save(function(err){
-		if(err){
-			callback(err);
-		}
+		callback(err);
 	});
 }
 
 Sequence.statics.modify = function(id,data,callback){
 	this.findByIdAndUpdate(id,data,function(err){
-		if(err){
-			callback(err);
-		}
+		callback(err);
 	});
 }
 
 Sequence.statics.remove = function(id,callback){
 	this.findByIdAndRemove(id,function(err){
-		if(err){
-			callback(err);
-		}
+		callback(err);
 	});
 }
 

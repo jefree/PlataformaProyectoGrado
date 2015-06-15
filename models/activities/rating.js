@@ -20,25 +20,19 @@ Rating.statics.add = function(author,statement,score,answer,callback){
 	});
 
 	new_rating.save(function(err){
-		if(err){
-			callback(err);
-		}
+		callback(err);
 	});
 }
 
 Rating.statics.modify = function(id,data,callback){
 	this.findByIdAndUpdate(id,data,function(err){
-		if(err){
-			callback(err);
-		}
+		callback(err);
 	});
 }
 
 Rating.statics.remove = function(id,callback){
 	this.findByIdAndRemove(id,function(err){
-		if(err){
-			callback(err);
-		}
+		callback(err);
 	});
 }
 

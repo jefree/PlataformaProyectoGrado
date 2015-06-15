@@ -22,9 +22,7 @@ Relation.statics.add = function(author,statement,score,sets,answer){
 	});
 
 	new_relation.save(function(err){
-		if(err){
-			callback(err);
-		}
+		callback(err);
 	});
 }
 
@@ -39,9 +37,7 @@ Relation.statics.modify = function(id,data,callback){
 
 Relation.statics.remove = function(id,callback){
 	this.findByIdAndRemove(id,function(err){
-		if(err){
-			callback(err);
-		}
+		callback(err);
 	});
 }
 

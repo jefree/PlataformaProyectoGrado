@@ -19,25 +19,19 @@ Sort.statics.add = function(author,statement,score,answer,callback){
 	});
 
 	new_sort.save(function(err){
-		if(err){
-			callback(err);
-		}
+		callback(err);
 	});
 }
 
 Sort.statics.modify = function(id,data,callback){
 	this.findByIdAndUpdate(id,data,function(err){
-		if(err){
-			callback(err);
-		}
+		callback(err);
 	});
 }
 
 Sort.statics.remove = function(id,callback){
 	this.findByIdAndRemove(id,function(err){
-		if(err){
-			callback(err);
-		}
+		callback(err);
 	});
 }
 

@@ -18,9 +18,7 @@ Record.statics.add = function(user,activity,score,callback){
 	});
 
 	new_record.save(function(err){
-		if(err){
-			callback(err);
-		}
+		callback(err);
 	});
 
 Record.statics.getByUser = function(user,callback){
