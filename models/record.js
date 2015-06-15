@@ -12,6 +12,7 @@ var Record = new Schema
 Record.statics.add = function(user,activity,score,callback){
 	var new_record = new this({
 		user:user,
+		guide:guide,
 		activity:activity,
 		score:score
 	});
@@ -19,8 +20,6 @@ Record.statics.add = function(user,activity,score,callback){
 	new_record.save(function(err){
 		if(err){
 			callback(err);
-		}else{
-			callback("Puntaje almacenado");
 		}
 	});
 
@@ -29,17 +28,17 @@ Record.statics.getByUser = function(user,callback){
 		if(err){
 			callback(err);
 		}else{
-			callback(data);
+			callback(null,data);
 		}
 	});
 }
 
 Record.statics.getByGuide = function(user,guide,callback){
-	this.find({user:user,activity:activity},function(err,data){
+	this.find({user:user,guide:guide},function(err,data){
 		if(err){
 			callback(err);
 		}else{
-			callback(data);
+			callback(null,data);
 		}
 	});
 }

@@ -20,32 +20,28 @@ User.statics.add = function(username,password,name,lastname,role,callback){
 	});
 	
 	new_user.save(function(err){
-		if(err){
-			callback(err);
-		}else{
-			callback("Usuario Registrado");
-		}
+		callback(err);
 	});
 }
 
-User.statics.modify = function(username,data,callback){
+User.statics.modify = function(username,password,name,lastname,role,callback){
+	var data = {
+		'username':username,
+		'password':password,
+		'name':name,
+		'lastname':lastname,
+		'role':role};
+
 	this.findOneAndUpdate({username:username},data,function(err){
-		if(err){
 			callback(err);
-		}else{
-			callback("Usuario Modificado");
 		}
 	});
 }
 
 User.statics.remove = function(username,callback){
 	this.findOneAndRemove({username:username},function(err){
-		if(err){
-			callback(err);
-		}else{
-			callback("Usuario Eliminado");
-		}
-	})
+		callback(err);
+	});
 }
 
 User.statics.getById = function(id,callback){
@@ -53,7 +49,7 @@ User.statics.getById = function(id,callback){
 		if(err){
 			callback(err);
 		}else{
-			callback(data);
+			callback(null,data);
 		}
 	});
 }
@@ -63,7 +59,7 @@ User.statics.getByUsername = function(username,callback){
 		if(err){
 			callback(err);
 		}else{
-			callback(data);
+			callback(null,data);
 		}
 	});
 }

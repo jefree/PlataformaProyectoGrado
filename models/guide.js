@@ -17,32 +17,27 @@ Guide.statics.add = function(author,title,description,activities,callback){
 		activities:activities
 	});
 
-	new_guide.save(function(err){
-		if(err){
-			callback(err);
-		}else{
-			callback("Guía registrada");
-		}
+	new_guide.save(function(err){		
+		callback(err);
 	});
 }
 
-Guide.statics.modify = function(id,data,callback){
+Guide.statics.modify = function(id,author,title,description,activities,callback){
+	var data = {
+		'author':author,
+		'title':title,
+		'description':description,
+		'activities':activities
+	}
+
 	this.findByIdAndUpdate(id,data,function(err){
-		if(err){
-			callback(err);
-		}else{
-			callback("Guía modificada");
-		}
+		callback(err);
 	});
 }
 
 Guide.statics.remove = function(id,callback){
 	this.findByIdAndRemove(id,function(err){
-		if(err){
-			callback(err);
-		}else{
-			callback("Guía eliminada");
-		}
+		callback(err);
 	});
 }
 
@@ -51,7 +46,7 @@ Guide.statics.getByAuthor = function(author,callback){
 		if(err){
 			callback(err);
 		}else{
-			callback(data);
+			callback(null,data);
 		}
 	});
 }
@@ -61,7 +56,7 @@ Guide.statics.getById = function(id,callback){
 		if(err){
 			callback(err);
 		}else{
-			callback(data);
+			callback(null,data);
 		}
 	});
 }
