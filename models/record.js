@@ -3,11 +3,11 @@ var Schema = mongoose.Schema;
 
 var Record = new Schema
 ({
-	user:String,
-	guide:String,
+	user:{type:Schema.Types.ObjectId,ref:'User'},
+	guide:{type:Schema.Types.ObjectId,ref:'Guide'},
 	activity:String,
 	score:Number
-})
+});
 
 Record.statics.add = function(user,activity,score,callback){
 	var new_record = new this({
@@ -41,4 +41,4 @@ Record.statics.getByGuide = function(user,guide,callback){
 	});
 }
 
-module.exports = mongoose.model('Record',Record,'records');
+module.exports = mongoose.model('Record',Record,'Records');
