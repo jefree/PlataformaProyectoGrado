@@ -1,71 +1,39 @@
 var express = require('express');
 var router = express.Router();
+
+var passport = require('passport');
 var user = require('../models/user');
 
 router.get('/new',function(req,res,next){
-	res.render();
+	res.render('new_user');
 });
 
 router.post('/new',function(req,res,next){
-	user.add(
-		req.body.username,
-		req.body.password,
-		req.body.name,
-		req.body.lastname,
-		req.body.role,
-		function(err){
-			if(err){
-
-			}else{
-				
-			}
-		});
-});
-
-router.get('/:username',function(req,res,next){
-	user.getByUsername(req.params.username,function(err,data){
+	user.create(req.body,function(err){
 		if(err){
-
+			res.redirect('/users/login');
 		}else{
-			
-		}
+			res.redirect('/users/profile');
+		}	
 	});
 });
 
-router.put('/:username',function(req,res,next){
-	user.modify(
-		req.params.username,
-		req.body.password,
-		req.body.name,
-		req.body.lastname,
-		req.body.role,
-		function(err){
-			if(err){
-
-			}else{
-
-			}
-		});
+router.get('/login',function(req,res,next){
+	res.render('users/login');
 });
 
-router.delete('/:username',function(req,res,next){
-	user.remove(req.params.username,function(err){
-		if(err){
+router.post('/login',passport.authenticate('local',{
+	successRedirect:'/users/profile',
+	failureRedirect:'/users/login'
+}));
 
-		}else{
-
-		}
-	});
+router.get('/profile',function(req,res,next){
+	res.render('users/profile',{user:req.user});
 });
 
-router.get('/:id',function(req,res,next){
-	user.getById(req.params.id,function(err,data){
-		if(err){
-
-		}else{
-
-		}
-	})
+router.get('/logout',function(req,res,next){
+	req.logout();
+	res.redirect('/');
 });
 
 module.exports = router;

@@ -1,32 +1,46 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var passportLocalMongoose = require('passport-local-mongoose');
+
+var guide = require('../models/guide');
 
 var User = new Schema
 ({
 	username:String,
-	password:String,
 	name:String,
 	lastname:String,
 	role:String,
 	guides:[{type:Schema.Types.ObjectId,ref:'Guide'}]
 });
 
-User.statics.add = function(data,callback){
-	var new_user = new this(data);
-	
-	new_user.save(function(err){
+User.plugin(passportLocalMongoose);
+
+User.statics.create = function(data,callback){
+	var password = data.password;
+	delete data.password;
+
+	this.register(data,password,function(err){
 		callback(err);
 	});
 }
 
-User.statics.modify = function(username,data,callback){
-	this.findOneAndUpdate({username:username},data,function(err){
-		callback(err);
+User.statics.erase = function(id,callback){
+	this.findById(id,function(err,data){
+		if(err){
+			callback(err);
+		}else{
+			if(data){
+				if(data.guides){
+					data.guides.forEach(function(item){
+						guide.erase(item,callback);
+					});
+				}
+				data.remove(callback);
+			}else{
+				callback("User Doesn't Exist");
+			}
+		}
 	});
-}
-
-User.statics.remove = function(username,callback){
-
 }
 
 User.statics.getById = function(id,callback){
@@ -34,19 +48,27 @@ User.statics.getById = function(id,callback){
 		if(err){
 			callback(err);
 		}else{
-			callback(null,data);
+			if(data){
+				callback(null,data);
+			}else{
+				callback("User Doesn't Exist");
+			}
 		}
 	});
 }
 
-User.statics.getByUsername = function(username,callback){
-	this.find({username:username},function(err,data){
+User.statics.addGuides = function(id,guides,callback){
+	this.findById(id,function(err,data){
 		if(err){
 			callback(err);
 		}else{
-			callback(null,data);
+			guides.forEach(function(item){
+				data.guides.push(mongoose.Types.ObjectId(item));
+			});
+			
+			data.save(callback);
 		}
 	});
 }
 
-module.exports = mongoose.model('User',User,"Users");
+module.exports = mongoose.model('User',User,'Users');

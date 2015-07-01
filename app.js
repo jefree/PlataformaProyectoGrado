@@ -8,12 +8,37 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var activities = require('./routes/activities');
+var guides = require('./routes/guides');
+var records = require('./routes/records');
 
+/**/
 var mongoose = require('mongoose');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var user_schema = require('./models/user');
+
+/**/
 
 var app = express();
 
+/**/
+
+app.use(require('express-session')
+({
+  secret: 'prototipo',
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(user_schema.authenticate()));
+passport.serializeUser(user_schema.serializeUser());
+passport.deserializeUser(user_schema.deserializeUser());
+
 mongoose.connect('mongodb://localhost/prueba');
+/**/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,6 +55,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/activities',activities);
+app.use('/guides',guides);
+app.use('/records',records);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

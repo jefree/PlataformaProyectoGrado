@@ -1,5 +1,8 @@
 var mongoose = require('mongoose');
+var deepPopulate = require('mongoose-deep-populate');
 var Schema = mongoose.Schema;
+
+var activity = require('../models/activity');
 
 var Guide = new Schema
 ({
@@ -8,32 +11,48 @@ var Guide = new Schema
 	activities:[{type:Schema.Types.ObjectId,ref:'Activity'}]
 });
 
-Guide.statics.add = function(data,callback){
+Guide.plugin(deepPopulate);
+
+Guide.statics.create = function(data,callback){
 	var new_guide = new this(data);
 
-	new_guide.save(function(err){		
-		callback(err);
+	new_guide.save(function(err,saved){		
+		if(err){
+			callback(err);
+		}else{
+			callback(null,saved.id);
+		}
 	});
 }
 
-Guide.statics.modify = function(id,data,callback){
-	this.findByIdAndUpdate(id,data,function(err){
-		callback(err);
-	});
-}
-
-Guide.statics.remove = function(id,callback){
-	this.findByIdAndRemove(id,function(err){
-		callback(err);
+Guide.statics.erase = function(id,callback){
+	this.findById(id,function(err,data){
+		if(err){
+			callback(err);
+		}
+		else{
+			if(data){
+				data.activities.forEach(function(item){
+					activity.erase(item,callback);
+				});
+				data.remove(callback);				
+			}else{
+				callback("Guide Doesn't Exist");
+			}	
+		}
 	});
 }
 
 Guide.statics.getById = function(id,callback){
-	this.findById(id,function(err,data){
+	this.findOne({_id:id}).deepPopulate('activities.body').exec(function(err,data){
 		if(err){
 			callback(err);
 		}else{
-			callback(null,data);
+			if(data){
+				callback(null,data);	
+			}else{
+				callback("Guide Doesn't Exist");
+			}
 		}
 	});
 }

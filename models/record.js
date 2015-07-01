@@ -5,21 +5,17 @@ var Record = new Schema
 ({
 	user:{type:Schema.Types.ObjectId,ref:'User'},
 	guide:{type:Schema.Types.ObjectId,ref:'Guide'},
-	activity:String,
-	score:Number
+	grades:[{type:Schema.Types.ObjectId,ref:'Activity',score:Number}]
+	
 });
 
-Record.statics.add = function(user,activity,score,callback){
-	var new_record = new this({
-		user:user,
-		guide:guide,
-		activity:activity,
-		score:score
-	});
+Record.statics.create = function(data,callback){
+	new_record = new this(data);
 
 	new_record.save(function(err){
 		callback(err);
 	});
+}
 
 Record.statics.getByUser = function(user,callback){
 	this.find({user:user},function(err,data){
@@ -31,8 +27,22 @@ Record.statics.getByUser = function(user,callback){
 	});
 }
 
-Record.statics.getByGuide = function(user,guide,callback){
-	this.find({user:user,guide:guide},function(err,data){
+Record.statics.getByIndividual = function(user,guide,callback){
+	this.findOne({user:user,guide:guide},function(err,data){
+		if(err){
+			callback(err);
+		}else{
+			if(data){
+				callback(null,data);
+			}else{
+				callback("Record doesn't exist");		
+			}
+		}
+	});
+}
+
+Record.statics.getAllByGuide = function(guide,callback){
+	this.find({guide:guide},function(err,data){
 		if(err){
 			callback(err);
 		}else{
